@@ -40,7 +40,7 @@
 				</button>
 
 				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#"><i
+					<li><a class="dropdown-item" href="userInfo.jsp"><i
 							class="bi bi-person-vcard"></i> Xem thông tin</a></li>
 					<li><a class="dropdown-item" href="#"><i
 							class="bi bi-cart2"></i> Xem giỏ hàng</a></li>

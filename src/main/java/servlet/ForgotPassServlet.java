@@ -3,7 +3,7 @@ package servlet;
 import java.io.IOException;
 
 import dao.ForgotPassDAO;
-import entity.EmailUtil;
+import email.EmailUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/forgotPass")
-public class ForgetPassServlet extends HttpServlet {
+public class ForgotPassServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,9 +23,15 @@ public class ForgetPassServlet extends HttpServlet {
 			String ConfirmNewPass = req.getParameter("ConfirmNewPass");
 
 			ForgotPassDAO forgotPass = new ForgotPassDAO();
+			
 			String verificationCode = String.valueOf((int) (Math.random() * 900000) + 100000);
 
 			boolean isforgotPass = forgotPass.isForgotPass(email);
+			
+			
+			
+			
+
 
 			if (isforgotPass) {
 
@@ -33,11 +39,10 @@ public class ForgetPassServlet extends HttpServlet {
 
 				EmailUtil.sendEmail(email, subject, verificationCode);
 
-//				HttpSession session = req.getSession();
-//				session.setAttribute("email", email);
-//				session.setAttribute("newPass", newPass);
 				req.getSession().setAttribute("email", email);
 				req.getSession().setAttribute("newPass", newPass);
+				req.getSession().setAttribute("verificationCode", verificationCode);
+				req.getSession().setAttribute("verificationTime",System.currentTimeMillis());
 
 				req.getRequestDispatcher("verify.jsp").forward(req, resp);
 			} else {

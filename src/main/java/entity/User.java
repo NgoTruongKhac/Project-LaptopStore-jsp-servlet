@@ -5,6 +5,7 @@ public class User {
 	private String name;
 	private String pass;
 	private String email;
+	private String phoneNumber;
 	private String verificationCode;
 
 	public User(String name, String pass, String email, String verificationCode) {
@@ -44,6 +45,15 @@ public class User {
 
 	public void setVerificationCode(String verificationCode) {
 		this.verificationCode = verificationCode;
+	}
+	
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	@Override

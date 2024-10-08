@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import database.ConnectDatabase;
@@ -12,27 +13,23 @@ public class RegisterDAO {
 	private Connection conn;
 	private ConnectDatabase db;
 
-	public boolean isSuccess(User user) {
+	public boolean isSuccess(String userName,String email) {
 		// TODO Auto-generated method stub
-		boolean isRegister = false;
+		boolean isRegister = true;
 
 		try {
-
 		
 			conn = db.getConnection();
 
-			String insertSQL = "INSERT INTO account(userName, pass, email, verificationCode, isVerified) VALUES (?, ?, ?, ?, 0)";
+			String insertSQL = "  select * from account where userName=? or email=?;";
 			PreparedStatement pr = conn.prepareStatement(insertSQL);
-			pr.setString(1, user.getName());
-			pr.setString(2, user.getPass());
-			pr.setString(3, user.getEmail());
-			pr.setString(4, user.getVerificationCode());
+			pr.setString(1, userName);
+			pr.setString(2, email);
 		
+			ResultSet rs=pr.executeQuery();
 
-			int i = pr.executeUpdate();
-
-			if (i == 1) {
-				isRegister = true;
+			if(rs.next()) {
+				isRegister=false;
 			}
 
 		} catch (SQLException e) {
@@ -41,20 +38,20 @@ public class RegisterDAO {
 
 		}
 		return isRegister;
-
 	}
-
-
 	
-	public boolean verifyCode(String verificationCode) {
+	public boolean verifyCode(User user) {
 		boolean isVerified = false;
 
 		try {
 			db = new ConnectDatabase();
 			conn = db.getConnection();
-			String verifySQL = "UPDATE account SET isVerified = 1 WHERE  verificationCode = ?";
+			String verifySQL = "INSERT INTO account(userName, pass, email, verificationCode) VALUES (?, ?, ?, ?);";
 			PreparedStatement pr = conn.prepareStatement(verifySQL);		
-			pr.setString(1, verificationCode);
+			pr.setString(1, user.getName());
+			pr.setString(2, user.getPass());
+			pr.setString(3, user.getEmail());
+			pr.setString(4, user.getVerificationCode());
 
 			int i = pr.executeUpdate();
 

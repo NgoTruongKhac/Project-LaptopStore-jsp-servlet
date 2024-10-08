@@ -22,7 +22,7 @@ public class LoginDAO {
 		try {
 			
 			conn = db.getConnection();
-			String SQLLogin = "SELECT * FROM account WHERE userName = ? and isVerified=1";
+			String SQLLogin = "SELECT * FROM account WHERE userName = ?";
 			PreparedStatement pr = conn.prepareStatement(SQLLogin);
 
 			// Gán giá trị cho các tham số

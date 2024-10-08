@@ -1,4 +1,4 @@
-package entity;
+package email;
 
 import java.util.Properties;
 import javax.mail.Message;
@@ -37,8 +37,7 @@ public class EmailUtil {
 			String htmlContent="<h2> Mã xác nhận của bạn là:   <span style='color: red; font-size: 30px'>"+messageBody+"</span></h2>";
 			message.setContent(htmlContent,"text/html; charset=UTF-8");
 			Transport.send(message);
-			
-		
+				
 		
 		} catch (MessagingException mex) {
 			mex.printStackTrace();

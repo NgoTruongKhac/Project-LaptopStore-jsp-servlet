@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import bcrypt.BCrypt;
 import dao.RegisterDAO;
-import entity.EmailUtil;
+import email.EmailUtil;
 import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -36,24 +36,27 @@ public class RegisterServlet extends HttpServlet {
 
 			}
 
-			String hashedPassword = BCrypt.hashpw(pass, BCrypt.gensalt());
-
-
 
 			String verificationCode = String.valueOf((int) (Math.random() * 900000) + 100000);
 
-			User user = new User(userName, hashedPassword, email, verificationCode);
+//			User user = new User(userName, hashedPassword, email, verificationCode);
 
 			RegisterDAO register = new RegisterDAO();
 
-			boolean isRegister = register.isSuccess(user);
+			boolean isRegister = register.isSuccess(userName,email);
 //
 			if (isRegister) {
 
 				String subject = "Mã xác nhận đăng ký";
 				
 				EmailUtil.sendEmail(email, subject, verificationCode);
-
+				
+				req.getSession().setAttribute("verificationTime",System.currentTimeMillis());
+				req.getSession().setAttribute("verificationCode", verificationCode);
+				req.getSession().setAttribute("userName", userName);
+				req.getSession().setAttribute("email", email);
+				req.getSession().setAttribute("pass", pass);
+				
 				req.getRequestDispatcher("verify.jsp").forward(req, resp);
 
 			} else {
